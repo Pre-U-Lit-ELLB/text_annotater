@@ -367,6 +367,7 @@ const EXCERPT = {
     "My sense, as though of hemlock I had drunk,",
     "Or emptied some dull opiate to the drains",
     "One minute past, and Lethe-wards had sunk:",
+    null,
     "'Tis not through envy of thy happy lot,",
     "But being too happy in thine happiness,—",
     "That thou, light-wingèd Dryad of the trees,",
@@ -387,11 +388,11 @@ const EXCERPT = {
   ],
   glossary: {
     "hemlock":    "a poisonous plant; its extract used as a sedative or to cause death",
-    "Lethe":      "in Greek myth, the river of forgetfulness in the underworld",
-    "Dryad":      "a tree nymph or forest spirit in Greek mythology",
+    "lethe":      "in Greek myth, the river of forgetfulness in the underworld",
+    "dryad":      "a tree nymph or forest spirit in Greek mythology",
     "flora":      "the Roman goddess of flowers and spring",
     "provençal":  "relating to Provence, southern France — associated with troubadour song",
-    "Hippocrene": "a fountain sacred to the Muses on Mount Helicon; its waters were said to inspire poetry",
+    "hippocrene": "a fountain sacred to the Muses on Mount Helicon; its waters were said to inspire poetry",
     "draught":    "archaic: a drink; specifically a long, deep sip",
     "opiate":     "a drug derived from opium, causing drowsiness or numbness",
   }
@@ -435,10 +436,10 @@ function buildSwatches() {
     b.style.background = cat.border;
     b.title = cat.label;
     b.dataset.key = cat.key;
-    b.onclick = () => {
-      activeCat = cat.key; eraseMode = false;
+    b.onclick = function() {
+      activeCat = this.dataset.key; eraseMode = false;
       document.getElementById('erase-btn').classList.remove('on');
-      document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('on', s.dataset.key === cat.key));
+      document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('on', s.dataset.key === activeCat));
     };
     c.appendChild(b);
   });
