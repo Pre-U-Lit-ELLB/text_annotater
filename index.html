@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Romantic Period — Close Reading Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── DESIGN TOKENS — match the annotator exactly ── */
+  :root {
+    --bg:        #f7f5f0;
+    --surface:   #ffffff;
+    --border:    #e2ddd6;
+    --border2:   #ccc7be;
+    --text:      #1a1814;
+    --text-2:    #6b6560;
+    --text-3:    #a09b95;
+    --accent:    #3d3530;
+    --info-bg:   #eef3fb;
+    --info-text: #2a52a0;
+    --radius:    8px;
+    --font-body: 'DM Sans', sans-serif;
+    --font-serif:'Lora', serif;
+
+    /* category colours — same as annotator swatches */
+    --c-imagery:   #2a9d6a;
+    --c-sound:     #3a6ed8;
+    --c-tone:      #c94040;
+    --c-structure: #b07a10;
+    --c-theme:     #9040c0;
+  }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    font-family: var(--font-body);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── PAGE SHELL ── */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 56px 28px 80px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .site-title {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+
+  .site-desc {
+    font-size: 14px;
+    color: var(--text-2);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── COLOUR BAR — visual callback to the highlight swatches ── */
+  .colour-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 28px;
+  }
+  .colour-bar span {
+    height: 3px;
+    flex: 1;
+    border-radius: 2px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  /* ── MODULE GRID ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  /* ── MODULE CARD ── */
+  .card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--card-accent, var(--border2));
+    border-radius: var(--radius) 0 0 var(--radius);
+    transition: width 0.15s;
+  }
+  .card:hover {
+    border-color: var(--border2);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+  .card:hover::before { width: 4px; }
+
+  .card-meta {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-3);
+    margin-bottom: 5px;
+  }
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+  .card-author {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-2);
+    margin-bottom: 10px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+  .card-arrow {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--border2);
+    transition: color 0.15s, right 0.15s;
+  }
+  .card:hover .card-arrow {
+    color: var(--text-3);
+    right: 14px;
+  }
+
+  /* placeholder card — not yet linked */
+  .card.placeholder {
+    opacity: 0.45;
+    pointer-events: none;
+    cursor: default;
+  }
+  .card.placeholder::before { background: var(--border); }
+
+  /* ── ABOUT PANEL ── */
+  .about {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.75;
+  }
+  .about p + p { margin-top: 10px; }
+  .about strong { color: var(--text); font-weight: 500; }
+
+  /* ── KEY ── */
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .key-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-2);
+  }
+  .key-dot {
+    width: 9px; height: 9px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="eyebrow">H2 Literature · Paper 2</div>
+    <h1 class="site-title">The English Romantic Period<br>Close Reading Tools</h1>
+    <p class="site-desc">
+      A set of interactive annotation tools for the close reading of set texts.
+      Select a text below to open its annotator.
+    </p>
+  </header>
+
+  <!-- COLOUR BAR — mirrors the five highlight categories -->
+  <div class="colour-bar" aria-hidden="true">
+    <span style="background:var(--c-imagery)"></span>
+    <span style="background:var(--c-sound)"></span>
+    <span style="background:var(--c-tone)"></span>
+    <span style="background:var(--c-structure)"></span>
+    <span style="background:var(--c-theme)"></span>
+  </div>
+
+  <!-- MODULE LIST -->
+  <div class="section-label">Texts</div>
+  <div class="module-grid" id="module-grid">
+    <!-- Cards are rendered by the script below.
+         To add or remove a module, edit the MODULES array. -->
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section-label">About this tool</div>
+  <div class="about">
+    <p>
+      Each annotator lets you <strong>highlight</strong> words and phrases by category
+      (Imagery, Sound, Tone, Structure, Theme), view a running <strong>highlights log</strong>,
+      take <strong>notes</strong> in a side panel, and access a <strong>glossary</strong>
+      of context-specific terms — with an option to auto-generate one via AI.
+    </p>
+    <p>
+      Use <strong>Focus mode</strong> to isolate individual lines as you work through the text.
+      Your highlights and notes are not saved between sessions.
+    </p>
+    <div class="key">
+      <div class="key-item"><div class="key-dot" style="background:var(--c-imagery)"></div> Imagery</div>
+      <div class="key-item"><div class="key-dot" style="background:var(--c-sound)"></div> Sound</div>
+      <div class="key-item"><div class="key-dot" style="background:var(--c-tone)"></div> Tone</div>
+      <div class="key-item"><div class="key-dot" style="background:var(--c-structure)"></div> Structure</div>
+      <div class="key-item"><div class="key-dot" style="background:var(--c-theme)"></div> Theme</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  HOW TO ADD A MODULE
+//  ────────────────────
+//  Each entry in the MODULES array below produces one card on this page.
+//
+//  Fields:
+//    title  — the poem or extract title
+//    author — author name
+//    year   — year of composition or publication
+//    desc   — one sentence describing the extract or its focus
+//    url    — the folder that contains the annotator, ending with /
+//             e.g. if your annotator lives at:
+//               your-repo/nightingale/index.html
+//             then set url to:
+//               "nightingale/"
+//    accent — the colour of the left border on the card.
+//             Use any CSS colour. The annotator category colours are:
+//               Imagery   #2a9d6a   Sound   #3a6ed8   Tone   #c94040
+//               Structure #b07a10   Theme   #9040c0
+//
+//  To mark a text as coming soon (greyed out, not clickable):
+//    set  url: null
+//
+//  EXAMPLE — add a new entry like this, inside the [ ] below:
+//  {
+//    title:  "Mont Blanc",
+//    author: "Percy Bysshe Shelley",
+//    year:   "1817",
+//    desc:   "Lines 1–48: the mind confronting an indifferent sublime.",
+//    url:    "mont-blanc/",
+//    accent: "#3a6ed8"
+//  },
+// ═══════════════════════════════════════════════════════════════════════
+
+const MODULES = [
+  {
+    title:  "Ode to a Nightingale",
+    author: "John Keats",
+    year:   "1819",
+    desc:   "Stanzas I–II: the speaker's longing to escape into the nightingale's world.",
+    url:    "nightingale/",
+    accent: "#2a9d6a"
+  },
+  // ↑ Add further modules above this line, following the format above.
+  // Set url: null for texts not yet ready — they'll appear greyed out.
+];
+
+// ── RENDER — do not edit below this line ─────────────────────────────
+
+const grid = document.getElementById('module-grid');
+
+MODULES.forEach((mod, i) => {
+  const a = document.createElement('a');
+  a.className = 'card' + (mod.url ? '' : ' placeholder');
+  a.href = mod.url || '#';
+  if (mod.url) a.title = `Open annotator: ${mod.title}`;
+  a.style.setProperty('--card-accent', mod.accent || 'var(--border2)');
+
+  a.innerHTML = `
+    <div class="card-meta">Extract ${String(i + 1).padStart(2, '0')}</div>
+    <div class="card-title">${mod.title}</div>
+    <div class="card-author">${mod.author}${mod.year ? `, ${mod.year}` : ''}</div>
+    ${mod.desc ? `<div class="card-desc">${mod.desc}</div>` : ''}
+    ${mod.url ? '<span class="card-arrow" aria-hidden="true">→</span>' : ''}
+  `;
+
+  grid.appendChild(a);
+});
+</script>
+</body>
+</html>
