@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
   :root {
     --bg:        #f7f5f0;
     --surface:   #ffffff;
@@ -25,7 +25,7 @@
     --font-serif:'Lora', serif;
     --font-mono: 'Courier New', monospace;
   }
-
+ 
   html, body {
     height: 100%;
     width: 100%;
@@ -35,7 +35,7 @@
     color: var(--text);
     font-size: 14px;
   }
-
+ 
   /* ── APP SHELL ── */
   .app {
     display: grid;
@@ -43,7 +43,7 @@
     height: 100vh;
     width: 100vw;
   }
-
+ 
   /* ── TOOLBAR ── */
   .toolbar {
     display: flex;
@@ -58,9 +58,9 @@
   .title-block .poem-title  { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.3; }
   .title-block .poem-author { font-size: 11px; color: var(--text-2); }
   .title-block { flex: 1; min-width: 140px; }
-
+ 
   .sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
-
+ 
   .swatch {
     width: 20px; height: 20px; border-radius: 50%;
     border: 2px solid transparent; cursor: pointer;
@@ -68,7 +68,7 @@
   }
   .swatch:hover { transform: scale(1.2); }
   .swatch.on { border-color: var(--text); }
-
+ 
   .tbtn {
     font-size: 11px; padding: 4px 10px;
     border: 1px solid var(--border2);
@@ -83,16 +83,16 @@
   .tbtn:hover { background: var(--bg); color: var(--text); }
   .tbtn.on { background: var(--info-bg); color: var(--info-text); border-color: #aabde0; }
   .tbtn:disabled { opacity: 0.4; cursor: not-allowed; }
-
+ 
   .cat-label { font-size: 11px; color: var(--text-3); white-space: nowrap; }
-
+ 
   /* ── BODY ── */
   .body {
     display: grid;
     grid-template-columns: 1fr 280px;
     min-height: 0;
   }
-
+ 
   /* ── TEXT PANE ── */
   .text-pane {
     overflow-y: auto;
@@ -100,7 +100,7 @@
     border-right: 1px solid var(--border);
     background: var(--surface);
   }
-
+ 
   .line-row {
     display: flex;
     align-items: baseline;
@@ -126,7 +126,7 @@
     cursor: text;
   }
   .sb { height: 16px; }
-
+ 
   mark.hl {
     border-radius: 3px;
     padding: 1px 0;
@@ -149,15 +149,15 @@
     top: var(--ty, 0px);
     left: var(--tx, 0px);
   }
-
+ 
   .text-pane.focus-mode .line-row:not(.focused) .lt { opacity: 0.15; }
   .line-row.focused .lt { opacity: 1; }
-
+ 
   .gw {
     border-bottom: 1.5px dashed var(--border2);
     cursor: help;
   }
-
+ 
   /* ── SIDEBAR ── */
   .sidebar {
     display: grid;
@@ -165,7 +165,7 @@
     min-height: 0;
     background: var(--bg);
   }
-
+ 
   .panel {
     border-bottom: 1px solid var(--border);
     padding: 12px 14px;
@@ -203,12 +203,12 @@
     font-family: var(--font-body);
   }
   .panel-action:hover { color: var(--text); border-color: var(--border2); }
-
+ 
   /* key */
   .key-grid { display: flex; flex-direction: column; gap: 5px; }
   .key-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-2); }
   .key-dot  { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
-
+ 
   /* notes */
   .notes-ta {
     flex: 1;
@@ -224,7 +224,7 @@
     min-height: 0;
   }
   .notes-ta::placeholder { color: var(--text-3); }
-
+ 
   /* log */
   .log-list {
     display: flex;
@@ -243,7 +243,7 @@
   .log-q { font-style: italic; font-family: var(--font-serif); font-size: 11px; color: var(--text); margin-bottom: 2px; }
   .log-c { font-size: 10px; color: var(--text-2); }
   .log-empty { font-size: 11px; color: var(--text-3); font-style: italic; }
-
+ 
   /* glossary */
   .gloss-head {
     display: flex;
@@ -269,7 +269,7 @@
   .gloss-term { font-weight: 500; color: var(--text); }
   .gloss-def  { color: var(--text-2); }
   .gloss-empty { font-size: 11px; color: var(--text-3); font-style: italic; }
-
+ 
   /* tooltip */
   #tip {
     position: fixed;
@@ -289,11 +289,11 @@
 </style>
 </head>
 <body>
-
+ 
 <div id="tip"><strong id="tip-term"></strong><span id="tip-def"></span></div>
-
+ 
 <div class="app">
-
+ 
   <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="title-block">
@@ -307,23 +307,25 @@
     <button class="tbtn" id="erase-btn">Erase</button>
     <button class="tbtn" id="focus-btn">Focus mode</button>
     <button class="tbtn" id="clear-btn">Clear all</button>
+    <div class="sep"></div>
+    <button class="tbtn" id="download-btn">Download PNG</button>
   </div>
-
+ 
   <!-- BODY -->
   <div class="body">
-
+ 
     <!-- TEXT -->
     <div class="text-pane" id="text-pane"></div>
-
+ 
     <!-- SIDEBAR -->
     <div class="sidebar">
-
+ 
       <!-- Highlight key -->
       <div class="panel">
         <div class="panel-label">Highlight key</div>
         <div class="key-grid" id="key-grid"></div>
       </div>
-
+ 
       <!-- Notes -->
       <div class="panel grow">
         <div class="panel-head">
@@ -332,29 +334,26 @@
         </div>
         <textarea class="notes-ta" id="notes" placeholder="Observations, patterns, draft response…"></textarea>
       </div>
-
+ 
       <!-- Highlights log -->
       <div class="panel">
         <div class="panel-label" style="margin-bottom:8px;">Highlights log</div>
         <div class="log-list" id="log-list"><span class="log-empty">No highlights yet.</span></div>
       </div>
-
+ 
       <!-- Glossary -->
       <div class="panel">
         <div class="gloss-head">
           <span class="panel-label">Glossary</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span id="gloss-badge"></span>
-            <button class="tbtn" id="gen-btn" style="font-size:10px;padding:3px 8px;">Auto-generate</button>
-          </div>
+          <span id="gloss-badge"></span>
         </div>
         <div class="gloss-list" id="gloss-list"><span class="gloss-empty">—</span></div>
       </div>
-
+ 
     </div>
   </div>
 </div>
-
+ 
 <script>
 // ═══════════════════════════════════════════════════════
 //  CONFIG — swap for each SLS module
@@ -397,7 +396,7 @@ const EXCERPT = {
     "opiate":     "a drug derived from opium, causing drowsiness or numbness",
   }
 };
-
+ 
 const CATS = [
   { key:"imagery",   label:"Imagery",   bg:"rgba(45,157,106,0.22)", border:"#2a9d6a" },
   { key:"sound",     label:"Sound",     bg:"rgba(58,110,216,0.22)", border:"#3a6ed8" },
@@ -406,18 +405,18 @@ const CATS = [
   { key:"theme",     label:"Theme",     bg:"rgba(144,64,192,0.22)", border:"#9040c0" },
 ];
 // ═══════════════════════════════════════════════════════
-
+ 
 let activeCat = CATS[0].key;
 let eraseMode = false;
 let focusMode = false;
 let anns = [];
 let glossary = { ...EXCERPT.glossary };
-
+ 
 const textPane = document.getElementById('text-pane');
 const logList  = document.getElementById('log-list');
 const glossDiv = document.getElementById('gloss-list');
 const tip      = document.getElementById('tip');
-
+ 
 // init
 document.getElementById('tb-title').textContent  = EXCERPT.title;
 document.getElementById('tb-author').textContent = EXCERPT.author;
@@ -425,9 +424,9 @@ buildSwatches();
 buildKey();
 buildText();
 renderGloss(Object.keys(glossary).length ? 'config' : null);
-
+ 
 // ── BUILD UI ──────────────────────────────────────────
-
+ 
 function buildSwatches() {
   const c = document.getElementById('swatches');
   CATS.forEach(cat => {
@@ -444,7 +443,7 @@ function buildSwatches() {
     c.appendChild(b);
   });
 }
-
+ 
 function buildKey() {
   const g = document.getElementById('key-grid');
   CATS.forEach(cat => {
@@ -454,7 +453,7 @@ function buildKey() {
     g.appendChild(d);
   });
 }
-
+ 
 function glossify(raw) {
   if (!Object.keys(glossary).length) return raw;
   let out = raw;
@@ -467,7 +466,7 @@ function glossify(raw) {
   });
   return out;
 }
-
+ 
 function buildText() {
   textPane.innerHTML = '';
   let n = 0;
@@ -480,33 +479,33 @@ function buildText() {
     const row = document.createElement('div');
     row.className = 'line-row';
     row.dataset.n = n;
-
+ 
     const ln = document.createElement('div');
     ln.className = 'ln';
     ln.textContent = n % 5 === 0 ? n : '';
-
+ 
     const lt = document.createElement('div');
     lt.className = 'lt';
     lt.innerHTML = glossify(line);
-
+ 
     row.addEventListener('click', e => {
       if (!focusMode || e.target.closest('.gw')) return;
       document.querySelectorAll('.line-row').forEach(r => r.classList.remove('focused'));
       row.classList.add('focused');
     });
-
+ 
     row.appendChild(ln); row.appendChild(lt);
     textPane.appendChild(row);
   });
 }
-
+ 
 // ── GLOSSARY ─────────────────────────────────────────
-
+ 
 function renderGloss(source) {
   glossDiv.innerHTML = '';
   document.getElementById('gloss-badge').innerHTML =
     source === 'ai' ? '<span class="gloss-badge">AI generated</span>' : '';
-
+ 
   const entries = Object.entries(glossary);
   if (!entries.length) {
     glossDiv.innerHTML = '<span class="gloss-empty">Click Auto-generate to build a glossary.</span>';
@@ -519,63 +518,18 @@ function renderGloss(source) {
     glossDiv.appendChild(el);
   });
 }
-
-document.getElementById('gen-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('gen-btn');
-  btn.disabled = true; btn.textContent = 'Generating…';
-  glossDiv.innerHTML = '<span class="gloss-empty" style="font-style:italic;">Calling API…</span>';
-
-  const body = EXCERPT.lines.filter(Boolean).join('\n');
-  const prompt = `You are a literary annotation assistant specialising in British Romantic literature (1785–1832).
-
-Analyse the following extract and identify terms that A-level students would benefit from having glossed. Prioritise:
-1. Archaic or unfamiliar diction
-2. Mythological and classical references (Greek, Roman, biblical)
-3. Literary/rhetorical terms enacted in the text (only if genuinely present)
-4. Historical and cultural context
-
-Return ONLY a valid JSON object. No preamble, no markdown fences.
-Format: {"term": "definition", "term2": "definition2"}
-Rules: terms must appear verbatim in the text; definitions one sentence max, context-specific; 6–12 terms; no common modern words.
-
-Title: ${EXCERPT.title}
-Author: ${EXCERPT.author}
-Text:\n${body}`;
-
-  try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        model:"claude-sonnet-4-20250514",
-        max_tokens:1000,
-        messages:[{role:"user",content:prompt}]
-      })
-    });
-    const data = await res.json();
-    const raw = data.content.find(b=>b.type==='text')?.text||'{}';
-    const ai = JSON.parse(raw.replace(/```json|```/g,'').trim());
-    glossary = { ...ai, ...EXCERPT.glossary };
-    buildText();
-    renderGloss('ai');
-  } catch(e) {
-    glossDiv.innerHTML = '<span class="gloss-empty" style="color:#c94040;">Generation failed.</span>';
-    glossary = { ...EXCERPT.glossary };
-    buildText();
-    renderGloss('config');
-  }
-  btn.textContent = 'Regenerate'; btn.disabled = false;
-});
-
+ 
+document.getElementById('gen-btn') && document.getElementById('gen-btn').remove();
+ 
 // ── TOOLBAR ACTIONS ───────────────────────────────────
-
+ 
 document.getElementById('erase-btn').addEventListener('click', () => {
   eraseMode = !eraseMode;
   document.getElementById('erase-btn').classList.toggle('on', eraseMode);
   document.querySelectorAll('.swatch').forEach(s => s.classList.remove('on'));
   if (!eraseMode) document.querySelector(`.swatch[data-key="${activeCat}"]`)?.classList.add('on');
 });
-
+ 
 document.getElementById('focus-btn').addEventListener('click', () => {
   focusMode = !focusMode;
   document.getElementById('focus-btn').classList.toggle('on', focusMode);
@@ -583,7 +537,7 @@ document.getElementById('focus-btn').addEventListener('click', () => {
   if (!focusMode) document.querySelectorAll('.line-row').forEach(r => r.classList.remove('focused'));
   else textPane.querySelector('.line-row')?.classList.add('focused');
 });
-
+ 
 document.getElementById('clear-btn').addEventListener('click', () => {
   document.querySelectorAll('mark.hl').forEach(m => {
     const p = m.parentNode;
@@ -592,13 +546,13 @@ document.getElementById('clear-btn').addEventListener('click', () => {
   });
   anns = []; renderLog();
 });
-
+ 
 document.getElementById('clear-notes').addEventListener('click', () => {
   document.getElementById('notes').value = '';
 });
-
+ 
 // ── HIGHLIGHTING ──────────────────────────────────────
-
+ 
 textPane.addEventListener('mouseup', () => {
   const sel = window.getSelection();
   if (!sel || sel.isCollapsed) return;
@@ -620,7 +574,7 @@ textPane.addEventListener('mouseup', () => {
   } catch(e) {}
   sel.removeAllRanges();
 });
-
+ 
 function removeAnn(id, el) {
   const p = el.parentNode;
   while (el.firstChild) p.insertBefore(el.firstChild, el);
@@ -628,7 +582,7 @@ function removeAnn(id, el) {
   anns = anns.filter(a => a.id !== id);
   renderLog();
 }
-
+ 
 function renderLog() {
   logList.innerHTML = '';
   if (!anns.length) { logList.innerHTML = '<span class="log-empty">No highlights yet.</span>'; return; }
@@ -640,9 +594,9 @@ function renderLog() {
     logList.appendChild(el);
   });
 }
-
+ 
 // ── TOOLTIP ───────────────────────────────────────────
-
+ 
 textPane.addEventListener('mouseover', e => {
   const gw = e.target.closest('.gw');
   if (!gw) return;
@@ -658,6 +612,48 @@ textPane.addEventListener('mouseout', e => {
   if (!e.target.closest('.gw')) tip.style.display = 'none';
 });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+// ── PNG DOWNLOAD ──────────────────────────────────────
+ 
+document.getElementById('download-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('download-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+ 
+  // Temporarily expand the text pane to full scroll height so all content renders
+  const pane = document.getElementById('text-pane');
+  const savedHeight   = pane.style.height;
+  const savedOverflow = pane.style.overflowY;
+  pane.style.height   = pane.scrollHeight + 'px';
+  pane.style.overflowY = 'visible';
+ 
+  // Hide the tooltip if visible
+  tip.style.display = 'none';
+ 
+  try {
+    const canvas = await html2canvas(document.querySelector('.app'), {
+      scale: 2,                  // 2× for retina sharpness
+      useCORS: true,
+      backgroundColor: '#f7f5f0',
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: document.querySelector('.app').scrollHeight,
+    });
+ 
+    const link = document.createElement('a');
+    const filename = (EXCERPT.title + ' — annotations').replace(/[^a-z0-9 —]/gi, '') + '.png';
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('Export failed. Try again.');
+  }
+ 
+  // Restore text pane
+  pane.style.height   = savedHeight;
+  pane.style.overflowY = savedOverflow;
+ 
+  btn.textContent = 'Download PNG'; btn.disabled = false;
+});
+</script>
 </body>
 </html>
-
